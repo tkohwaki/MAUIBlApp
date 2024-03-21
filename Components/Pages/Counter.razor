@@ -1,0 +1,20 @@
+﻿@page "/counter"
+@inject IHostIF HostInterface
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @HostInterface.Count</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+
+    protected override void OnInitialized() {
+        HostInterface.RefreshClient = async () => await InvokeAsync(()=>StateHasChanged());
+    }
+    private void IncrementCount()
+    {
+        HostInterface.Count++;
+        HostInterface.FireClientEvent(this,new EventArgs());
+    }
+}

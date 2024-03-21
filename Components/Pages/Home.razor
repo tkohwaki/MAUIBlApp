@@ -1,0 +1,56 @@
+﻿@page "/"
+
+@inject IHostIF HostInterface
+
+<h2>Counter</h2>
+
+<p role="status">Current count:
+@if (Numbers != null && Numbers.Count != 0) {
+    foreach(var v in Numbers) {
+        string imgname = $"/images/number_{v}.png";
+        <img src="@imgname" style="width:42px;height:49px"/>
+    }
+}
+</p>
+<br/>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+
+    /// <summary>
+    /// カウンタのイメージIndex
+    /// </summary>
+    /// <returns></returns>
+    protected List<int> Numbers = new () {0};
+
+    /// <summary>
+    /// Initialize
+    /// </summary>
+    protected override void OnInitialized() {
+        // コンポーネント側を外部からリフレッシュするActionの設定
+        HostInterface.RefreshClient = async () => await InvokeAsync(()=>{CreateNumberImages();StateHasChanged();});
+    }
+    /// <summary>
+    /// ボタンイベント
+    /// </summary>
+    private void IncrementCount()
+    {
+        // Interfaceのカウントをインクリメント
+        HostInterface.Count++;
+        // カウンタ⇒イメージ番号の作成
+        CreateNumberImages();
+        // ホストに通知
+        HostInterface.FireClientEvent(this,new EventArgs());
+    }
+    /// <summary>
+    /// イメージ番号の生成
+    /// </summary>
+    private void CreateNumberImages() {
+        Numbers = new();
+        string s = HostInterface.Count.ToString();
+        for(int i=0;i < s.Length; i++) {
+            Numbers.Add(Convert.ToInt32(s[i].ToString()));
+        }
+    }
+}
