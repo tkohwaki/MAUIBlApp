@@ -10,7 +10,7 @@
 @code {
 
     protected override void OnInitialized() {
-        HostInterface.RefreshClient = async () => await InvokeAsync(()=>StateHasChanged());
+        HostInterface.HostEvent += async (e,sender) => await this.InvokeAsync(StateHasChanged);
     }
     private void IncrementCount()
     {

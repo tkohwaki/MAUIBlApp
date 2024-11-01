@@ -24,10 +24,8 @@ public partial class MainPage : ContentPage
 		// インターフェースのカウントアップ
 		_hostif.Count++;
 		lblNumber.Text = _hostif.Count.ToString();
-		// Client(Blazor Component)のリフレッシュ
-		if (_hostif.RefreshClient != null) {
-			_hostif.RefreshClient();
-		}
+		// Client(Blazor Component)へイベント通知
+		_hostif.FireHostEvent(sender,e);
 	}
 	/// <summary>
 	/// Client(Blazor Component)イベントハンドラ

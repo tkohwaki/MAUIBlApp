@@ -7,7 +7,7 @@ public interface IHostIF {
     /// <value>カウント値</value>
     public int Count { get; set; }
     /// <summary>
-    /// イベントハンドラ
+    /// クライアントイベントハンドラ
     /// </summary>
     public event EventHandler ComponentEvent;
     /// <summary>
@@ -17,10 +17,17 @@ public interface IHostIF {
     /// <param name="e"></param>
     public void FireClientEvent(object sender, EventArgs e);
     /// <summary>
-    /// ホスト側からクライアントの画面更新
+    /// ホストイベントハンドラ
+    /// </summary> <summary>
+    /// 
+    /// </summary>
+    public event EventHandler HostEvent;
+    //
+    /// <summary>
+    /// ホスト側からイベント発生
     /// </summary>
     /// <value></value>
-    public Action RefreshClient { get; set; }
+    public void FireHostEvent(object sender, EventArgs e);
 }
 /// <summary>
 /// IHostIFの実装
@@ -31,5 +38,8 @@ public class HostInterface : IHostIF {
     public void FireClientEvent(object sender, EventArgs e) {
         ComponentEvent?.Invoke(sender,e);
     }
-    public Action RefreshClient {get; set; } = null!;
+    public event EventHandler HostEvent = null!;
+    public void FireHostEvent(object sender, EventArgs e) {
+        HostEvent?.Invoke(sender,e);
+    }
 }

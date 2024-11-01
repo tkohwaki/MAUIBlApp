@@ -28,8 +28,8 @@
     /// Initialize
     /// </summary>
     protected override void OnInitialized() {
-        // コンポーネント側を外部からリフレッシュするActionの設定
-        HostInterface.RefreshClient = async () => await InvokeAsync(()=>{CreateNumberImages();StateHasChanged();});
+        // Hostイベントのハンドラ設定
+        HostInterface.HostEvent += async (_,_) => await InvokeAsync(()=>{CreateNumberImages();StateHasChanged();});
     }
     /// <summary>
     /// ボタンイベント
